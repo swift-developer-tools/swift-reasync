@@ -1,0 +1,76 @@
+# ===----------------------------------------------------------------------===//
+#
+# This source file is part of the swift-reasync open source project.
+#
+# Copyright (c) Margins Technologies LLC.
+# Licensed under the Apache License, Version 2.0.
+#
+# ===----------------------------------------------------------------------===//
+
+name: 💥 Crash Report
+description: >
+    Report a crash or an unexpected termination.
+labels:
+  - bug
+  - crash
+  - triage
+body:
+  - type: textarea
+    attributes:
+      label: Description
+      description: >
+        A clear and concise description of what happened.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Reproduction
+      description: >
+        Step-by-step instructions to consistently reproduce the issue.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Stack Trace
+      description: >
+        The complete stack trace.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: >
+        A clear and concise description of the expected behavior.
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Package Version
+      description: >
+        The swift-reasync version used when the issue occurred.
+      placeholder: e.g. swift-reasync 1.0.0
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Swift Version
+      description: >
+        The Swift version used when the issue occurred.
+      placeholder: e.g. Swift 6.3
+    validations:
+      required: true
+  - type: input
+    attributes:
+      label: Platform and Version
+      description: >
+        The platform version used when the issue occurred.
+      placeholder: e.g. macOS 26.4
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Additional Information
+      description: >
+        Additional context that may help. For example, logs or error messages.
+    validations:
+      required: false
