@@ -14,9 +14,6 @@ import SwiftDiagnostics
 /// Diagnostics for macro expansion.
 internal enum AsyncRemovalDiagnosticKind: DiagnosticMessage
 {
-    /// Protocol declarations are not supported.
-    case protocolNotSupported
-    
     /// Synchronous function declarations are not supported.
     case requiresAsync
     
@@ -30,10 +27,6 @@ internal enum AsyncRemovalDiagnosticKind: DiagnosticMessage
     {
         switch self
         {
-            case .protocolNotSupported:
-                
-                return "@Reasync cannot be applied to protocols"
-                
             case
                 .requiresAsync,
                 .reasyncOnNonFunction:
@@ -51,9 +44,8 @@ internal enum AsyncRemovalDiagnosticKind: DiagnosticMessage
         
         switch self
         {
-            case .protocolNotSupported      : id = "protocolNotSupported"
-            case .requiresAsync             : id = "requiresAsync"
-            case .reasyncOnNonFunction      : id = "reasyncOnNonFunction"
+            case .requiresAsync         : id = "requiresAsync"
+            case .reasyncOnNonFunction  : id = "reasyncOnNonFunction"
         }
         
         return MessageID(

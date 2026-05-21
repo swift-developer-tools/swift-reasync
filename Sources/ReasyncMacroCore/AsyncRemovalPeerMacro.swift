@@ -34,32 +34,9 @@ extension AsyncRemovalPeerMacro
         guard var function = declaration.as(FunctionDeclSyntax.self)
         else
         {
-            var fixIts: [FixIt] = []
-            
-            if
-                declaration.isProtocol(DeclGroupSyntax.self),
-                !declaration.is(ProtocolDeclSyntax.self)
-            {
-                let fixIt = FixIt(
-                    message: AsyncRemovalFixItKind.useReasyncMembers,
-                    changes:
-                    [
-                        .replace(
-                            oldNode:    Syntax(node.attributeName),
-                            newNode:    Syntax(IdentifierTypeSyntax(
-                                            name: "ReasyncMembers"
-                                        ))
-                        )
-                    ]
-                )
-                
-                fixIts.append(fixIt)
-            }
-            
             context.diagnose(Diagnostic(
                 node:       node,
-                message:    AsyncRemovalDiagnosticKind.reasyncOnNonFunction,
-                fixIts:     fixIts
+                message:    AsyncRemovalDiagnosticKind.reasyncOnNonFunction
             ))
 
             return []

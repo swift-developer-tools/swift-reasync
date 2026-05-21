@@ -111,15 +111,11 @@ internal final class ReasyncPeerMacroExpansionTests: XCTestCase
             .reasyncOnNonFunction
             .message
         
-        let fixIt = FixItSpec(
-            message: AsyncRemovalFixItKind.useReasyncMembers.message
-        )
-        
         let diagnostic = DiagnosticSpec(
             message:    message,
             line:       1,
             column:     1,
-            fixIts:     [fixIt]
+            fixIts:     []
         )
         
         assertMacroExpansion(

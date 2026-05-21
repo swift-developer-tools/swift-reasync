@@ -16,16 +16,3 @@ public macro Reasync() = #externalMacro(
     module:     "ReasyncMacro",
     type:       "ReasyncPeerMacro"
 )
-
-
-
-/// Produces synchronous overloads of any asynchronous functions declared in
-/// the type to which the macro is attached.
-///
-/// - Important: This is a purely syntactic transformation. The generated
-/// function declarations must be valid in a synchronous context.
-@attached(member, names: arbitrary)
-public macro ReasyncMembers() = #externalMacro(
-    module:     "ReasyncMacro",
-    type:       "ReasyncMemberMacro"
-)
