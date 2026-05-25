@@ -8,27 +8,20 @@ declarations.
 ## Overview
 
 Libraries that provide both synchronous and asynchronous variants of the same 
-function must maintain two nearly-identical declarations that differ only in 
-their use of `async`/`await` keywords. swift-reasync eliminates this 
-duplication with a macro that generates a synchronous overload at compile time.
+function must maintain two nearly-identical declarations that typically differ 
+only in their use of `async`/`await` keywords. swift-reasync eliminates this 
+duplication with a macro that generates a synchronous peer overload at compile 
+time.
 
-The transformation is purely syntactic, removing `async` and `await` keywords. 
-`async let` bindings become `let` bindings, `for await` loops become `for` 
-loops, and `async` closure parameters become synchronous. All other attributes, 
-modifiers, trivia, and documentation comments are preserved in the generated 
-declaration.
+The transformation is purely syntactic, removing the `async` and `await` 
+keywords wherever they appear, along with the related concurrency annotations 
+that are either invalid on synchronous forms or that the peer's synchronous body 
+can no longer support. All other syntax is preserved.
 
 The generated function must be valid in a synchronous context without further
 modification. If the function body contains operations that are inherently 
 asynchronous, such as calls to actor-isolated methods or async-only APIs, the 
 generated synchronous overload will not compile.
-
-
-
-## `@Reasync`
-
-`@Reasync` is a peer macro that generates a synchronous overload of an 
-asynchronous function.
 
 ```swift
 @Reasync
@@ -78,9 +71,6 @@ func doubleThenAdd(
 //     return x + y
 // }
 ```
-
-> [!NOTE]
-> `@Reasync` can only be applied to asynchronous function declarations.
 
 
 
