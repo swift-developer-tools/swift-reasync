@@ -31,7 +31,7 @@ extension AsyncRemovalPeerMacro
         in                  context     : some MacroExpansionContext
     ) throws -> [DeclSyntax]
     {
-        guard var function = declaration.as(FunctionDeclSyntax.self)
+        guard let function = declaration.as(FunctionDeclSyntax.self)
         else
         {
             context.diagnose(Diagnostic(
@@ -41,8 +41,6 @@ extension AsyncRemovalPeerMacro
 
             return []
         }
-        
-        
         
         guard function.signature.effectSpecifiers?.asyncSpecifier != nil
         else
@@ -55,46 +53,40 @@ extension AsyncRemovalPeerMacro
             return []
         }
         
-        
-        
-        if let reasyncAttrIndex: AttributeListSyntax.Index
-            = function.reasyncAttrIndex
+        guard !context.lexicalContext
+            .contains(where: { $0.is(ProtocolDeclSyntax.self) })
+        else
         {
-            let reasyncAttr: AttributeListSyntax.Element
-                = function.attributes[reasyncAttrIndex]
+            context.diagnose(Diagnostic(
+                node:       node,
+                message:    AsyncRemovalDiagnosticKind.reasyncOnProtocolRequirement
+            ))
             
-            /// Remove the attribute from the peer declaration.
-            function.attributes.remove(at: reasyncAttrIndex)
-            
-            /// Transfer the leading trivia from the removed attribute
-            /// to the first remaining attribute, the access level modifier,
-            /// or to `func`.
-            if var first: AttributeListSyntax.Element
-                = function.attributes.first
-            {
-                first.leadingTrivia = reasyncAttr.leadingTrivia
-                
-                function.attributes[function.attributes.startIndex] = first
-            }
-            else if var first: DeclModifierSyntax = function.modifiers.first
-            {
-                first.leadingTrivia = reasyncAttr.leadingTrivia
-                
-                function.modifiers[function.modifiers.startIndex] = first
-            }
-            else
-            {
-                function.funcKeyword.leadingTrivia = reasyncAttr.leadingTrivia
-            }
+            return []
         }
         
         
         
-        let rewriter = AsyncRemovalRewriter()
+        let rewriter = AsyncRemovalRewriter(
+            rootFunction:   function,
+            context:        context
+        )
         
-        let rewritten: FunctionDeclSyntax
-            = rewriter.rewrite(function).cast(FunctionDeclSyntax.self)
+        let rewritten = rewriter
+            .rewrite(function)
+            .cast(FunctionDeclSyntax.self)
         
-        return [DeclSyntax(rewritten)]
+        guard let prefix: TriviaPiece = function.leadingIndentationPrefix
+        else
+        {
+            return [DeclSyntax(rewritten)]
+        }
+        
+        let normalized: FunctionDeclSyntax
+            = IndentationTrimmingRewriter(prefix: prefix)
+                .rewrite(rewritten)
+                .cast(FunctionDeclSyntax.self)
+        
+        return [DeclSyntax(normalized)]
     }
 }

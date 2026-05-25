@@ -82,6 +82,10 @@ let package = Package(
                     name: "SwiftSyntaxMacrosTestSupport",
                     package: "swift-syntax"
                 )
+            ],
+            swiftSettings:
+            [
+                .enableUpcomingFeature("NonisolatedNonsendingByDefault")
             ]
         )
     ],
