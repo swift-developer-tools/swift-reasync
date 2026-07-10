@@ -7,8 +7,14 @@
 //
 //===----------------------------------------------------------------------===//
 
-import ReasyncMacroCore
-
-
-
-internal struct ReasyncPeerMacro: AsyncRemovalPeerMacro { }
+internal final class Box
+{
+    var value: Int
+    
+    init(
+        _ value: Int
+    )
+    {
+        self.value = value
+    }
+}

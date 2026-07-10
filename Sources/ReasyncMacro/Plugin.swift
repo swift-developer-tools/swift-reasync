@@ -18,7 +18,6 @@ struct ReasyncMacroPlugin: CompilerPlugin
 {
     let providingMacros: [any Macro.Type] =
     [
-        ReasyncMemberMacro.self,
         ReasyncPeerMacro.self
     ]
 }

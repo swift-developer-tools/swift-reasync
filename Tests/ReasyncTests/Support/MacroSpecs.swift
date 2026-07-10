@@ -7,8 +7,15 @@
 //
 //===----------------------------------------------------------------------===//
 
-import ReasyncMacroCore
+@testable import ReasyncMacro
+import SwiftSyntaxMacroExpansion
 
 
 
-internal struct ReasyncPeerMacro: AsyncRemovalPeerMacro { }
+internal let macroSpecs: [String : MacroSpec] =
+[
+    "Reasync": MacroSpec(
+        type:           ReasyncMacro.ReasyncPeerMacro.self,
+        conformances:   ["Reasync"]
+    )
+]

@@ -14,7 +14,8 @@ import SwiftDiagnostics
 /// Fix-its for macro expansion.
 internal enum AsyncRemovalFixItKind: FixItMessage
 {
-    case useReasyncMembers
+    /// Remove a redundant nested `@Reasync` attribute.
+    case removeNestedReasync
     
     
     
@@ -23,7 +24,7 @@ internal enum AsyncRemovalFixItKind: FixItMessage
     {
         switch self
         {
-            case .useReasyncMembers: return "Use '@ReasyncMembers'"
+            case .removeNestedReasync: return "Remove '@Reasync'"
         }
     }
     
@@ -36,7 +37,7 @@ internal enum AsyncRemovalFixItKind: FixItMessage
         
         switch self
         {
-            case .useReasyncMembers: id = "useReasyncMembers"
+            case .removeNestedReasync: id = "removeNestedReasync"
         }
         
         return MessageID(

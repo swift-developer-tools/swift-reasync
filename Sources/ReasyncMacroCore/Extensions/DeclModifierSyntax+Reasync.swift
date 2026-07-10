@@ -7,8 +7,16 @@
 //
 //===----------------------------------------------------------------------===//
 
-import ReasyncMacroCore
+import SwiftSyntax
 
 
 
-internal struct ReasyncPeerMacro: AsyncRemovalPeerMacro { }
+extension DeclModifierSyntax
+{
+    /// Whether this is a `nonisolated(nonsending)` declaration modifier.
+    internal var isNonisolatedNonsending: Bool
+    {
+        return self.name.text == "nonisolated"
+            && self.detail?.detail.text == "nonsending"
+    }
+}
