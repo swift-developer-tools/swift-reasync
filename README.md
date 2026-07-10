@@ -72,6 +72,28 @@ func doubleThenAdd(
 // }
 ```
 
+### Strict Concurrency
+
+The macro's transformation removes `async` and `await` from the function 
+declaration, but `async` functions in Swift 6 frequently carry additional 
+annotations. The macro handles these as follows:
+
+| Annotation                | Rule     | Removal Scope                                  |
+|---------------------------|----------|------------------------------------------------|
+| `async`, `await`          | Remove   | Everywhere                                     |
+| `@isolated(any)`          | Remove   | Closure parameter types (at any nesting depth) |
+| `nonisolated(nonsending)` | Remove   | Everywhere                                     |
+| `@concurrent`             | Remove   | Everywhere                                     |
+| `@Sendable`               | Remove   | Closure parameter types (at any nesting depth) |
+| `sending`                 | Preserve |                                                |
+| Global actors             | Preserve |                                                |
+| `isolated` parameters     | Preserve |                                                |
+| Bare `nonisolated`        | Preserve |                                                |
+
+These rules are designed to produce a synchronous peer that is 
+type-correct under Swift 6 strict concurrency, without silently changing the 
+meaning of annotations that are unrelated to concurrent execution.
+
 
 
 ## Installation
